@@ -62,7 +62,7 @@ exports.confirm = function(msg){
  * Prompt for password with optional mask.
  */
 
-exports.password = function(msg, mask){
+exports.password = function(msg, mask, allowBlank){
   mask = null == mask ? '*' : mask;
   return function(done){
     var buf = '';
@@ -77,7 +77,7 @@ exports.password = function(msg, mask){
         process.stdin.pause();
         process.stdin.removeAllListeners('keypress');
         process.stdin.setRawMode(false);
-        if (!buf.trim().length) return exports.password(msg, mask)(done);
+        if (!allowBlank && !buf.trim().length) return exports.password(msg, mask, allowBlank)(done);
         done(null, buf);
         return;
       }
